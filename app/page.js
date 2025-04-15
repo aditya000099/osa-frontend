@@ -64,7 +64,7 @@ export default function ChatPage() {
 
     try {
       // const response = await fetch("http://localhost:3001/api/chat", {
-      const response = await fetch("http://localhost:3001/api/chat", {
+      const response = await fetch("https://osa-web.vercel.app/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: currentInput, chatId: chatId }),
