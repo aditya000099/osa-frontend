@@ -68,7 +68,6 @@ export default function ChatPage() {
         "https://osa-web.vercel.app/api/chat",
         { message: currentInput, chatId: chatId },
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
