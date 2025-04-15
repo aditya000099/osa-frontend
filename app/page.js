@@ -66,10 +66,10 @@ export default function ChatPage() {
       // const response = await fetch("http://localhost:3001/api/chat", {
       const response = await fetch("https://osa-web.vercel.app/api/chat", {
         method: "POST",
+        mode: "cors",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Origin: "https://osa-frontend-iota.vercel.app",
         },
         body: JSON.stringify({ message: currentInput, chatId: chatId }),
       });
