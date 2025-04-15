@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import GitHubRepoCard from "./components/GitHubRepoCard";
+import axios from "axios";
 
 const SendIcon = () => (
   <svg
@@ -63,38 +64,29 @@ export default function ChatPage() {
     setIsLoading(true);
 
     try {
-      // const response = await fetch("http://localhost:3001/api/chat", {
-      const response = await fetch("https://osa-web.vercel.app/api/chat", {
-        method: "POST",
-        mode: "cors",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message: currentInput, chatId: chatId }),
-      });
+      const response = await axios.post(
+        "https://osa-web.vercel.app/api/chat",
+        { message: currentInput, chatId: chatId },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      if (!response.ok) {
-        const errorData = await response
-          .json()
-          .catch(() => ({ error: "Failed to parse error response" }));
-        console.error("API Error:", errorData);
-        throw new Error(
-          errorData.error || `HTTP error! status: ${response.status}`
-        );
-      }
-
-      const data = await response.json();
       const aiMessage = {
         role: "ai",
-        content: data.response || "Received empty response.",
+        content: response.data.response || "Received empty response.",
       };
       setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
       console.error("Failed to send message:", error);
       const errorMessage = {
         role: "ai",
-        content: `Sorry, something went wrong: ${error.message}`,
+        content: `Sorry, something went wrong: ${
+          error.response?.data?.error || error.message
+        }`,
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
